@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "259633101572",
+    "project_id": "tustracker-225de",
+    "storage_bucket": "tustracker-225de.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259633101572:android:cd022c4f4807fde538ae51",
+        "android_client_info": {
+          "package_name": "com.example.tustracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdDZsK3FHINdhBuE6d80JrEum6XhdsHkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
