@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.asFlow
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -51,6 +53,9 @@ import java.util.Locale
 fun RegisterPage(navController: NavHostController, viewModel: StartPageViewModel = viewModel()) {
     var kemail by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    //Error message in the case of empty variables (name or password)
+    val errorMessage by viewModel.errorMessage.asFlow().collectAsState(initial = null)
 
     Column(
         modifier = Modifier
@@ -142,6 +147,13 @@ fun RegisterPage(navController: NavHostController, viewModel: StartPageViewModel
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            errorMessage?.let { Text(
+                text = it,
+                color = Color.Red,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(vertical = 8.dp) )
+            }
 
             Button(
                 onClick = {

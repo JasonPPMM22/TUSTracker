@@ -10,6 +10,7 @@ class StartPageViewModel : ViewModel(){
 
     // LiveData to hold the error message
     val errorMessage = MutableLiveData<String>()
+    val loginErrorMessage = MutableLiveData<String>()
 
     // LiveData to hold the user's id
     val userId = MutableLiveData<String>()
@@ -46,8 +47,7 @@ class StartPageViewModel : ViewModel(){
     fun loginUser(kemail: String, password: String, onLoginSuccess: () -> Unit) {
         // Check if the email or password field is empty
         if (kemail.isEmpty() || password.isEmpty()) {
-            // Commented out to avoid displaying error messages in the ViewModel
-            // loginErrorMessage.postValue("Email or password cannot be empty")
+            loginErrorMessage.postValue("Email or password cannot be empty")
             return
         }
 
@@ -58,7 +58,7 @@ class StartPageViewModel : ViewModel(){
                     val currentUser = auth.currentUser
                     if (currentUser != null) {
                         // Post the user ID to a LiveData
-                        //loggedInUserId.postValue(currentUser.uid)
+//                        loggedInUserId.postValue(currentUser.uid)
 
                         // Call the onLoginSuccess callback
                         onLoginSuccess.invoke()

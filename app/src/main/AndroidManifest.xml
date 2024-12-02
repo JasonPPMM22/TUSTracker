@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TUSTracker"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDRKmWUPXLJMJwMlHqeLHxPw40wlcqRl-M" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
