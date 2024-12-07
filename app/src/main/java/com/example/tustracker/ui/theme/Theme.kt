@@ -1,4 +1,4 @@
-package com.mad.tusmoylishgym.ui.theme
+package com.example.tustracker.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -64,7 +65,7 @@ fun TUSTrackerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        //typography = Typography,
         content = content
     )
 }

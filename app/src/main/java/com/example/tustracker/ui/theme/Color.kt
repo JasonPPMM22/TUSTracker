@@ -1,4 +1,4 @@
-package com.mad.tusmoylishgym.ui.theme
+package com.example.tustracker.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

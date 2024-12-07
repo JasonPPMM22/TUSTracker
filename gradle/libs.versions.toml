@@ -13,6 +13,16 @@ navigationRuntimeKtx = "2.8.4"
 firebaseAuthKtx = "23.1.0"
 googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.1.0"
+<<<<<<< Updated upstream
+=======
+firebaseMessaging = "24.1.0"
+google_maps_sdk = "18.1.0"
+runtimeLivedata = "1.7.5"
+firebaseFirestoreKtx = "25.1.1"
+
+
+
+>>>>>>> Stashed changes
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +43,17 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+<<<<<<< Updated upstream
+=======
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+google_maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "google_maps_sdk" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+
+
+
+
+>>>>>>> Stashed changes
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

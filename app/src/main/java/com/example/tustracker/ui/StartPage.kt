@@ -41,7 +41,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tustracker.R
-import com.mad.tusmoylishgym.ui.theme.TUSTrackerTheme
+import com.example.tustracker.ui.theme.TUSTrackerTheme
 import java.util.Locale
 
 

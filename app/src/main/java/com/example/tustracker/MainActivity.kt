@@ -15,10 +15,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+<<<<<<< Updated upstream
 import com.example.tustracker.ui.RegisterPage
 import com.example.tustracker.ui.StartPage
 import com.example.tustracker.ui.StartPageViewModel
 import com.mad.tusmoylishgym.ui.theme.TUSTrackerTheme
+=======
+import com.example.tustracker.ui.*
+import com.example.tustracker.ui.theme.TUSTrackerTheme
+>>>>>>> Stashed changes
 
 
 class MainActivity : ComponentActivity() {
@@ -51,6 +56,25 @@ fun NavGraph(navController: NavHostController) {
         composable("registerPage") {
             RegisterPage(navController, viewModel)
         }
+<<<<<<< Updated upstream
+=======
+        composable("mainPage") {
+            MainPage(navController)
+        }
+        composable("wellnessPage") {
+            WellnessPage(navController)
+        }
+        composable("contactPage") {
+            ContactPage(navController)
+        }
+        composable("journalPage") {
+            JournalPage(navController, startPageViewModel)
+        }
+        composable("addJournalPage") {
+            AddJournalPage(navController, startPageViewModel)
+        }
+
+>>>>>>> Stashed changes
     }
 }
 

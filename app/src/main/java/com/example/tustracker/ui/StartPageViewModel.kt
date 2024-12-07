@@ -1,15 +1,24 @@
 package com.example.tustracker.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
-class StartPageViewModel : ViewModel(){
+class StartPageViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     // LiveData to hold the error message
     val errorMessage = MutableLiveData<String>()
+
+    private val _journals = MutableLiveData<List<Journal>>()
+    val journals: LiveData<List<Journal>> = _journals
+
+    init {
+        fetchJournalsFromFirebase()
+    }
 
     // LiveData to hold the user's id
     val userId = MutableLiveData<String>()
@@ -42,7 +51,6 @@ class StartPageViewModel : ViewModel(){
     }
 
 
-
     fun loginUser(kemail: String, password: String, onLoginSuccess: () -> Unit) {
         // Check if the email or password field is empty
         if (kemail.isEmpty() || password.isEmpty()) {
@@ -72,6 +80,54 @@ class StartPageViewModel : ViewModel(){
                     // Commented out to avoid displaying error messages in the ViewModel
                     // loginErrorMessage.postValue(task.exception?.message)
                 }
+            }
+    }
+
+    private fun fetchJournalsFromFirebase() {
+        val db = FirebaseFirestore.getInstance()
+        val journalsRef =
+            db.collection("journals") // Assuming journals are stored in this collection
+
+        journalsRef.get().addOnSuccessListener { documents ->
+            val journalList = mutableListOf<Journal>()
+            for (document in documents) {
+                val title = document.getString("title") ?: ""
+                val content = document.getString("content") ?: ""
+                val timestamp = document.getLong("timestamp") ?: 0L
+                val userId = document.getString("userId") ?: ""
+
+                journalList.add(Journal(title, content, timestamp, userId))
+            }
+            _journals.postValue(journalList)
+        }.addOnFailureListener { exception ->
+            // Handle failure here
+        }
+    }
+
+
+    fun saveJournalToFirebase(
+        title: String,
+        content: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        val db = FirebaseFirestore.getInstance()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        val journalEntry = mapOf(
+            "userId" to userId,
+            "title" to title,
+            "content" to content,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        db.collection("journals")
+            .add(journalEntry)
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception.message ?: "Unknown error")
             }
     }
 }
