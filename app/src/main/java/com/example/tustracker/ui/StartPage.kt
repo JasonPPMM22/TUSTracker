@@ -134,7 +134,7 @@ fun StartPage(navController: NavHostController, viewModel: StartPageViewModel = 
             Button(
                 onClick = {
                     viewModel.loginUser(kemail.lowercase(Locale.getDefault()), password) {
-                        navController.navigate("hubPage")
+                        navController.navigate("mainPage")
                     }
                 },
                 shape = MaterialTheme.shapes.medium,

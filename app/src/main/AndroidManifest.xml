@@ -17,15 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TUSTracker"
         tools:targetApi="31">
-<<<<<<< Updated upstream
-=======
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDRKmWUPXLJMJwMlHqeLHxPw40wlcqRl-M" />
-
         <!-- MainActivity -->
->>>>>>> Stashed changes
         <activity
             android:name=".MainActivity"
             android:exported="true"
