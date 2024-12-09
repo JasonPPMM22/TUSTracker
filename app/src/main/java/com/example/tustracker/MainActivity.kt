@@ -31,9 +31,7 @@ class MainActivity : ComponentActivity() {
             val channelId = "default_channel"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = NotificationChannel(
-                    channelId,
-                    "Default Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    channelId, "Default Channel", NotificationManager.IMPORTANCE_DEFAULT
                 )
                 val notificationManager =
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -42,8 +40,7 @@ class MainActivity : ComponentActivity() {
 
             TUSTrackerTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     // Pass the ViewModel to the NavGraph
                     NavGraph(navController)
@@ -55,7 +52,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-    val startPageViewModel: StartPageViewModel = viewModel() // Keep existing StartPageViewModel setup
+    val startPageViewModel: StartPageViewModel =
+        viewModel() // Keep existing StartPageViewModel setup
     NavHost(navController, startDestination = "startPage") {
         composable("startPage") {
             StartPage(navController, startPageViewModel)

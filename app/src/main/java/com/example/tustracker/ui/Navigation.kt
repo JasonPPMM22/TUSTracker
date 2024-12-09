@@ -15,15 +15,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation(
-    drawerState: DrawerState,
-    navController: NavController, // Navigation controller
+    drawerState: DrawerState, navController: NavController, // Navigation controller
     content: @Composable () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
+        drawerState = drawerState, drawerContent = {
             Box(
                 modifier = Modifier
                     .width(240.dp)
@@ -43,7 +41,7 @@ fun Navigation(
                         },
                         text = { Text("Main Page") },
 
-                    )
+                        )
                     // Wellness Page
                     DropdownMenuItem(
                         onClick = {
@@ -52,7 +50,7 @@ fun Navigation(
                         },
                         text = { Text("Wellness Page") },
 
-                    )
+                        )
                     // Contact Page
                     DropdownMenuItem(
                         onClick = {
@@ -61,7 +59,7 @@ fun Navigation(
                         },
                         text = { Text("Contact Page") },
 
-                    )
+                        )
                     // Mood Tracking
                     DropdownMenuItem(
                         onClick = {
@@ -70,7 +68,7 @@ fun Navigation(
                         },
                         text = { Text("Mood Tracking") },
 
-                    )
+                        )
                     // Goal Setting
                     DropdownMenuItem(
                         onClick = {
@@ -89,7 +87,6 @@ fun Navigation(
                     )
                 }
             }
-        },
-        content = content
+        }, content = content
     )
 }

@@ -17,6 +17,7 @@ firebaseMessaging = "24.1.0"
 google_maps_sdk = "18.1.0"
 runtimeLivedata = "1.7.5"
 firebaseFirestoreKtx = "25.1.1"
+playServicesPhenotype = "17.0.0"
 
 
 [libraries]
@@ -42,6 +43,7 @@ firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging
 google_maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "google_maps_sdk" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+play-services-phenotype = { group = "com.google.android.gms", name = "play-services-phenotype", version.ref = "playServicesPhenotype" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

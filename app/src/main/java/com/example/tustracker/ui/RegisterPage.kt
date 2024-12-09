@@ -1,35 +1,19 @@
 package com.example.tustracker.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,17 +22,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tustracker.R
 import com.example.tustracker.ui.theme.TUSTrackerTheme
-import java.util.Locale
-
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPage(navController: NavHostController, viewModel: StartPageViewModel = viewModel()) {
+    val isPortrait = androidx.compose.ui.platform.LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
+
+    if (isPortrait) {
+        RegisterPortraitLayout(navController, viewModel)
+    } else {
+        RegisterLandscapeLayout(navController, viewModel)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RegisterPortraitLayout(navController: NavHostController, viewModel: StartPageViewModel) {
     var kemail by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -58,7 +53,6 @@ fun RegisterPage(navController: NavHostController, viewModel: StartPageViewModel
             .verticalScroll(rememberScrollState())
             .background(color = Color(0xFFA49461))
     ) {
-        // Image - heading
         Image(
             painter = painterResource(R.mipmap.ic_launcher_foreground),
             contentDescription = "TUS HEADER",
@@ -67,125 +61,158 @@ fun RegisterPage(navController: NavHostController, viewModel: StartPageViewModel
                 .fillMaxWidth()
                 .height(200.dp)
         )
+        Text(
+            text = "TUSTracker",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            textAlign = TextAlign.Center
+        )
 
-        // StartPage - Header
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = kemail,
+                    onValueChange = { kemail = it },
+                    label = { Text("K-Number") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Black,
+                        unfocusedBorderColor = Color.Black
+                    )
+                )
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Password") },
+                    modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Black,
+                        unfocusedBorderColor = Color.Black
+                    )
+                )
+
+                Button(
+                    onClick = {
+                        viewModel.registerUser(kemail.lowercase(Locale.getDefault()), password) {
+                            navController.navigate("startPage")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(Color.Black)
+                ) {
+                    Text(text = "Sign Up", color = Color.White)
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RegisterLandscapeLayout(navController: NavHostController, viewModel: StartPageViewModel) {
+    var kemail by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFA49461))
+            .padding(16.dp)
+    ) {
+        Image(
+            painter = painterResource(R.mipmap.ic_launcher_foreground),
+            contentDescription = "TUS HEADER",
+            contentScale = ContentScale.FillHeight,
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+        )
+
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(2f)
+                .padding(start = 16.dp),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "TUSTracker",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 16.dp)
             )
-        }
 
-        // Main Content
-        Spacer(Modifier.weight(1f))
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Main Content - K-Number
             OutlinedTextField(
                 value = kemail,
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
                 onValueChange = { kemail = it },
+                label = { Text("K-Number") },
+                modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colorScheme.surface,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.surface,
-                    disabledBorderColor = MaterialTheme.colorScheme.surface,
-                ),
-                label = {
-                    Text(
-                        text = "K-Number",
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 18.sp
-                    )
-                },
-                isError = false,
-                keyboardOptions = KeyboardOptions.Default,
-                keyboardActions = KeyboardActions.Default,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.surface
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Main Content - Password
             OutlinedTextField(
                 value = password,
-                singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.fillMaxWidth(),
                 onValueChange = { password = it },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colorScheme.surface,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.surface,
-                    disabledBorderColor = MaterialTheme.colorScheme.surface,
-                ),
-                label = {
-                    Text(
-                        text = "Password",
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 18.sp
-                    )
-                },
-                isError = false,
-                keyboardOptions = KeyboardOptions.Default,
-                keyboardActions = KeyboardActions.Default,
-                visualTransformation = PasswordVisualTransformation()
+                    unfocusedBorderColor = MaterialTheme.colorScheme.surface
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-
 
             Button(
                 onClick = {
-                    viewModel.registerUser(kemail.lowercase(Locale.getDefault()), password) {
+                    viewModel.registerUser(kemail.lowercase(Locale.getDefault()), password) { // calling viewModel to register user in firebase
                         navController.navigate("startPage")
                     }
-
                 },
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color.Black)
             ) {
-                Text(
-                    text = "Sign Up",
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.White
-                )
+                Text(text = "Sign Up", color = Color.White)
             }
         }
-
-        // Footer - Invisible but retains space
-        Spacer(Modifier.weight(1f))
-        Image(
-            painter = painterResource(R.drawable.tusfooter),
-            contentDescription = "TUS FOOTER",
-            contentScale = ContentScale.FillWidth,
-            colorFilter = ColorFilter.tint(Color.Transparent), // Make invisible
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-        )
     }
 }
 
-
-    @Preview(showBackground = true)
-    @Composable
-    fun RegisterPagePreview() {
-        TUSTrackerTheme {
-            RegisterPage(navController = rememberNavController())
-
-        }
+@Preview(showBackground = true)
+@Composable
+fun RegisterPagePortraitPreview() {
+    TUSTrackerTheme {
+        RegisterPortraitLayout(navController = rememberNavController(), viewModel = viewModel())
     }
+}
+
+@Preview(showBackground = true, widthDp = 800, heightDp = 400)
+@Composable
+fun RegisterPageLandscapePreview() {
+    TUSTrackerTheme {
+        RegisterLandscapeLayout(navController = rememberNavController(), viewModel = viewModel())
+    }
+}

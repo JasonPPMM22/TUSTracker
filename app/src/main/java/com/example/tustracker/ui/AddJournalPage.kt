@@ -1,14 +1,19 @@
 package com.example.tustracker.ui
 
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -35,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,35 +62,26 @@ fun AddJournalPage(
     val coroutineScope = rememberCoroutineScope()
 
     Navigation(
-        drawerState = drawerState,
-        navController = navController
+        drawerState = drawerState, navController = navController
     ) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            "Add Journal",
-                            color = Color.White
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            coroutineScope.launch { drawerState.open() }
-                        }) {
-                            Icon(
-                                Icons.Default.Menu,
-                                contentDescription = "Menu",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor = Color.Black
-                    )
+        Scaffold(topBar = {
+            TopAppBar(title = {
+                Text(
+                    "Add Journal", color = Color.White
                 )
-            }
-        ) { innerPadding ->
+            }, navigationIcon = {
+                IconButton(onClick = {
+                    coroutineScope.launch { drawerState.open() }
+                }) {
+                    Icon(
+                        Icons.Default.Menu, contentDescription = "Menu", tint = Color.White
+                    )
+                }
+            }, colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = Color.Black
+            )
+            )
+        }) { innerPadding ->
             AddJournalPageContent(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
@@ -103,105 +100,191 @@ fun AddJournalPageContent(
     val title = remember { mutableStateOf("") }
     val content = remember { mutableStateOf("") }
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(color = Color(0xFFA49461)),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Header image
-        Image(
-            painter = painterResource(R.mipmap.ic_launcher_foreground),
-            contentDescription = "TUS HEADER",
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Title section
-        Text(
-            text = "Create a New Journal Entry",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Title input
-        TextField(
-            value = title.value,
-            onValueChange = { title.value = it },
-            label = { Text("Title") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        )
-
-// Content input
-        TextField(
-            value = content.value,
-            onValueChange = { content.value = it },
-            label = { Text("Content") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .height(200.dp),
-        )
-
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Save button
-        Button(
-            onClick = {
-                if (title.value.isNotEmpty() && content.value.isNotEmpty()) {
-                    viewModel.saveJournalToFirebase(
-                        title = title.value,
-                        content = content.value,
-                        onSuccess = {
-                            Toast.makeText(context, "Journal Saved", Toast.LENGTH_SHORT).show()
-                            navController.popBackStack()
-                        },
-                        onFailure = { error ->
-                            Toast.makeText(context, "Error saving journal: $error", Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                } else {
-                    Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+    if (isLandscape) { // Checking for what orientation phone is in
+        Row(
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = Color(0xFFA49461))
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Save",
-                color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "Create a New Journal Entry",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                TextField(value = title.value,
+                    onValueChange = { title.value = it },
+                    label = { Text("Title") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                TextField(
+                    value = content.value,
+                    onValueChange = { content.value = it },
+                    label = { Text("Content") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        if (title.value.isNotEmpty() && content.value.isNotEmpty()) {
+                            viewModel.saveJournalToFirebase(title = title.value,
+                                content = content.value,
+                                onSuccess = {
+                                    Toast.makeText(context, "Journal Saved", Toast.LENGTH_SHORT)
+                                        .show()
+                                    navController.popBackStack()
+                                },
+                                onFailure = { error ->
+                                    Toast.makeText(
+                                        context, "Error saving journal: $error", Toast.LENGTH_SHORT
+                                    ).show()
+                                })
+                        } else {
+                            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                ) {
+                    Text(
+                        text = "Save",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Image(
+                painter = painterResource(R.mipmap.ic_launcher_foreground),
+                contentDescription = "TUS HEADER",
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
             )
         }
+    } else {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .background(color = Color(0xFFA49461)),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(R.mipmap.ic_launcher_foreground),
+                contentDescription = "TUS HEADER",
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
 
-        Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // Footer image
-        Image(
-            painter = painterResource(R.drawable.tusfooter),
-            contentDescription = "TUS FOOTER",
-            contentScale = ContentScale.FillWidth,
-            colorFilter = ColorFilter.tint(Color.Transparent),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-        )
+            Text(
+                text = "Create a New Journal Entry",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TextField(
+                value = title.value,
+                onValueChange = { title.value = it },
+                label = { Text("Title") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TextField(
+                value = content.value,
+                onValueChange = { content.value = it },
+                label = { Text("Content") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(200.dp),
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    if (title.value.isNotEmpty() && content.value.isNotEmpty()) {
+                        viewModel.saveJournalToFirebase(title = title.value,
+                            content = content.value,
+                            onSuccess = {
+                                Toast.makeText(context, "Journal Saved", Toast.LENGTH_SHORT).show()
+                                navController.popBackStack()
+                            },
+                            onFailure = { error ->
+                                Toast.makeText(
+                                    context, "Error saving journal: $error", Toast.LENGTH_SHORT
+                                ).show()
+                            })
+                    } else {
+                        Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+            ) {
+                Text(
+                    text = "Save",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Image(
+                painter = painterResource(R.drawable.tusfooter),
+                contentDescription = "TUS FOOTER",
+                contentScale = ContentScale.FillWidth,
+                colorFilter = ColorFilter.tint(Color.Transparent),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+            )
+        }
     }
 }
 

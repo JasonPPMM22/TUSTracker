@@ -30,8 +30,7 @@ class StartPageViewModel : ViewModel() {
             return
         }
 
-        auth.createUserWithEmailAndPassword(kemail, password)
-            .addOnCompleteListener { task ->
+        auth.createUserWithEmailAndPassword(kemail, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // User is registered
                     val currentUser = auth.currentUser
@@ -59,8 +58,7 @@ class StartPageViewModel : ViewModel() {
             return
         }
 
-        auth.signInWithEmailAndPassword(kemail, password)
-            .addOnCompleteListener { task ->
+        auth.signInWithEmailAndPassword(kemail, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // User is logged in
                     val currentUser = auth.currentUser
@@ -106,10 +104,7 @@ class StartPageViewModel : ViewModel() {
 
 
     fun saveJournalToFirebase(
-        title: String,
-        content: String,
-        onSuccess: () -> Unit,
-        onFailure: (String) -> Unit
+        title: String, content: String, onSuccess: () -> Unit, onFailure: (String) -> Unit
     ) {
         val db = FirebaseFirestore.getInstance()
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
@@ -121,12 +116,9 @@ class StartPageViewModel : ViewModel() {
             "timestamp" to System.currentTimeMillis()
         )
 
-        db.collection("journals")
-            .add(journalEntry)
-            .addOnSuccessListener {
+        db.collection("journals").add(journalEntry).addOnSuccessListener {
                 onSuccess()
-            }
-            .addOnFailureListener { exception ->
+            }.addOnFailureListener { exception ->
                 onFailure(exception.message ?: "Unknown error")
             }
     }
