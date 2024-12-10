@@ -99,7 +99,7 @@ fun PortraitLayout(navController: NavHostController) {
     Spacer(modifier = Modifier.height(16.dp))
 
     Button(
-        onClick = { /* Navigate to Goal Setting page */ },
+        onClick = { navController.navigate("goalSetting") },
         colors = ButtonDefaults.buttonColors(Color.Black),
         modifier = Modifier
             .fillMaxWidth()
@@ -196,7 +196,7 @@ fun LandscapeLayout(navController: NavHostController) {
             }
 
             Button(
-                onClick = { /* Navigate to Goal Setting page */ },
+                onClick = { navController.navigate("goalSetting") },
                 colors = ButtonDefaults.buttonColors(Color.Black),
                 modifier = Modifier
                     .fillMaxWidth()

@@ -76,6 +76,12 @@ fun NavGraph(navController: NavHostController) {
         composable("addJournalPage") {
             AddJournalPage(navController, startPageViewModel)
         }
+        composable("goalSetting") {
+            GoalTrackingPage(navController)
+        }
+        composable("addGoalPage") {
+            AddGoalPage(navController)
+        }
 
     }
 }

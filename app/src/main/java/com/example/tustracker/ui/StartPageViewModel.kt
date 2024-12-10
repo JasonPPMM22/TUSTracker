@@ -13,6 +13,8 @@ class StartPageViewModel : ViewModel() {
     // LiveData to hold the error message
     val errorMessage = MutableLiveData<String>()
 
+    private val db = FirebaseFirestore.getInstance()
+
     private val _journals = MutableLiveData<List<Journal>>()
     val journals: LiveData<List<Journal>> = _journals
 
@@ -120,6 +122,29 @@ class StartPageViewModel : ViewModel() {
                 onSuccess()
             }.addOnFailureListener { exception ->
                 onFailure(exception.message ?: "Unknown error")
+            }
+    }
+    fun saveGoalToFirebase(
+        task: String,
+        dueDate: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        val goal = hashMapOf(
+            "task" to task,
+            "dueDate" to dueDate,
+            "completed" to false
+        )
+
+        // Save the goal to Firebase Firestore
+        val db = FirebaseFirestore.getInstance()
+        db.collection("goals")
+            .add(goal)
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Unknown error")
             }
     }
 }
