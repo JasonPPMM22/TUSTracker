@@ -85,7 +85,7 @@ fun MainPage(navController: NavHostController) {
 @Composable
 fun PortraitLayout(navController: NavHostController) {
     Button(
-        onClick = { /* Navigate to Mood Tracking page */ },
+        onClick = { navController.navigate("moodTrackerScreen") },
         colors = ButtonDefaults.buttonColors(Color.Black),
         modifier = Modifier
             .fillMaxWidth()
@@ -186,7 +186,7 @@ fun LandscapeLayout(navController: NavHostController) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
-                onClick = { /* Navigate to Mood Tracking page */ },
+                onClick = { navController.navigate("moodTrackerScreen") },
                 colors = ButtonDefaults.buttonColors(Color.Black),
                 modifier = Modifier
                     .fillMaxWidth()

@@ -63,7 +63,7 @@ fun Navigation(
                     // Mood Tracking
                     DropdownMenuItem(
                         onClick = {
-                            navController.navigate("moodTracking")
+                            navController.navigate("moodTrackerScreen")
                             coroutineScope.launch { drawerState.close() }
                         },
                         text = { Text("Mood Tracking") },

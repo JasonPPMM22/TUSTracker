@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -81,6 +82,9 @@ fun NavGraph(navController: NavHostController) {
         }
         composable("addGoalPage") {
             AddGoalPage(navController)
+        }
+        composable("moodTrackerScreen") {
+            MoodTrackerScreen(navController)
         }
 
     }
