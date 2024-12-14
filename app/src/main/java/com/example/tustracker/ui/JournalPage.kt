@@ -155,6 +155,7 @@ fun JournalPageResponsiveLayout(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .background(color = Color(0xFFA49461)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
